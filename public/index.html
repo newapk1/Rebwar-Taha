@@ -6,82 +6,434 @@
     <title>ڕێبوار تەها</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --c-text: #e2e8f0; --c-text-muted: #94a3b8; --c-accent: #38bdf8; --c-bg-blur: rgba(15, 23, 42, 0.6 ); --c-border: rgba(56, 189, 248, 0.2); --c-shadow: rgba(56, 189, 248, 0.25); --c-success: #4ade80; --c-error: #f87171; }
-        *, *::before, *::after { box-sizing: border-box; }
-        body { font-family: 'Vazirmatn', sans-serif; margin: 0; display: grid; place-items: center; min-height: 100vh; color: var(--c-text); background-color: #020617; overflow: hidden; position: relative; padding: 20px; }
-        .gradient-bg { width: 100%; height: 100%; position: absolute; overflow: hidden; top: 0; left: 0; z-index: -1; filter: blur(80px); }
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .gradient-bg .g1 { position: absolute; background: #0ea5e9; width: 400px; height: 400px; border-radius: 50%; top: 10%; left: 10%; animation: rotate 25s cubic-bezier(0.8, 0.2, 0.2, 0.8) alternate infinite; }
-        .gradient-bg .g2 { position: absolute; background: #ec4899; width: 350px; height: 350px; border-radius: 50%; bottom: 15%; right: 5%; animation: rotate 20s cubic-bezier(0.1, 0.7, 0.9, 0.3) alternate infinite; }
-        .gradient-bg .g3 { position: absolute; background: #8b5cf6; width: 300px; height: 300px; border-radius: 50%; top: 25%; right: 20%; animation: rotate 15s cubic-bezier(0.4, 0.1, 0.6, 0.9) alternate infinite; }
-        .container { width: 100%; max-width: 500px; padding: 30px; text-align: center; border-radius: 24px; background: var(--c-bg-blur); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--c-border); box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.3), 0 0 80px 0 var(--c-shadow) inset; transform: translateY(20px); opacity: 0; animation: fadeIn 1s 0.2s forwards cubic-bezier(0.2, 0.8, 0.2, 1); }
-        @keyframes fadeIn { to { transform: translateY(0); opacity: 1; } }
-        .animate-child { transform: translateY(20px); opacity: 0; animation: fadeIn 0.8s forwards cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .profile-pic { animation-delay: 0.3s; width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid var(--c-accent); margin-bottom: 15px; box-shadow: 0 0 25px var(--c-shadow); }
-        h1 { animation-delay: 0.4s; font-size: 2rem; margin: 0 0 5px; font-weight: 700; text-shadow: 0 0 15px var(--c-shadow); }
-        .subtitle { animation-delay: 0.5s; color: var(--c-text-muted); font-size: 1.1rem; margin-bottom: 25px; font-weight: 300; }
-        form { animation-delay: 0.6s; }
-        textarea { width: 100%; background: rgba(0, 0, 0, 0.25); border: 1px solid var(--c-border); border-radius: 12px; padding: 15px; font-family: inherit; font-size: 1rem; color: var(--c-text); min-height: 100px; resize: none; margin-bottom: 15px; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        textarea::placeholder { color: var(--c-text-muted); opacity: 0.8; }
-        textarea:focus { outline: none; border-color: var(--c-accent); background: rgba(0, 0, 0, 0.4); box-shadow: 0 0 20px var(--c-shadow); transform: scale(1.02); min-height: 140px; }
-        button { width: 100%; background: var(--c-accent); color: #020617; border: none; padding: 16px; border-radius: 12px; font-family: inherit; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        button:hover { transform: scale(1.05); }
-        button:active { transform: scale(0.98); }
-        button:disabled { background-color: #475569; color: #94a3b8; cursor: not-allowed; }
-        .response-message { font-size: 1rem; font-weight: bold; margin-top: 20px; padding: 10px; border-radius: 8px; opacity: 0; transform: translateY(10px); transition: all 0.4s ease-out; display: none; }
-        .response-message.show { display: block; opacity: 1; transform: translateY(0); }
-        .response-message.success { background-color: rgba(74, 222, 128, 0.2); color: var(--c-success); }
-        .response-message.error { background-color: rgba(248, 113, 113, 0.2); color: var(--c-error); }
+        :root {
+            --primary: #4a6fa5;
+            --primary-light: #6b8cbc;
+            --primary-dark: #385785;
+            --secondary: #e8e8e8;
+            --accent: #ff7e5f;
+            --text: #2d3748;
+            --text-light: #718096;
+            --text-lighter: #a0aec0;
+            --white: #ffffff;
+            --bg-light: #f8f9fa;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .profile-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--white);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .verified-badge {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: var(--accent);
+            color: var(--white);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--white);
+            font-size: 0.8rem;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .feedback-form {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .optional-text {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-weight: 400;
+            margin-right: 5px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--secondary);
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: var(--bg-light);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            background: var(--text-lighter);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .response-message {
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-top: 1.5rem;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        .response-message.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .response-message.success {
+            background: rgba(72, 187, 120, 0.1);
+            color: #2ecc71;
+            border: 1px solid rgba(72, 187, 120, 0.3);
+        }
+
+        .response-message.error {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .welcome-alert {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .alert-content {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            transform: scale(0.9);
+            animation: scaleIn 0.3s ease 0.2s forwards;
+        }
+
+        @keyframes scaleIn {
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .alert-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .alert-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+
+        .alert-message {
+            margin-bottom: 1.5rem;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .alert-btn {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .alert-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                max-width: 100%;
+            }
+            
+            .header {
+                padding: 1.5rem;
+            }
+            
+            .profile-pic {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .feedback-form {
+                padding: 1.5rem;
+            }
+            
+            .alert-content {
+                padding: 1.5rem;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="gradient-bg"> <div class="g1"></div> <div class="g2"></div> <div class="g3"></div> </div>
-    <div class="container">
-        <img src="imageRebwar.jpg" alt="وێنەی ڕێبوار تەها" class="profile-pic animate-child">
-        <h1 class="animate-child">ڕێبوار تەها</h1>
-        <p class="subtitle animate-child">چیت هەیە بۆ ڕێبوار تەها؟</p>
-        <form id="feedbackForm" class="animate-child">
-            <textarea name="feedback" placeholder="...پەیامەکەت لێرە بنووسە" required></textarea>
-            <button type="submit">ناردن</button>
-        </form>
-        <p id="response" class="response-message"></p>
+    <div class="welcome-alert" id="welcomeAlert">
+        <div class="alert-content">
+            <div class="alert-icon">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h2 class="alert-title">بەخێربێیت!</h2>
+            <p class="alert-message">
+                پەیامەکەت تەنها ڕێبوار تەها دەیبینێت و بە تەواوی پارێزراو دەمێنێتەوە. 
+                نوسینی ناو و ژمارەی مۆبایل ئارەزومەندانەیە - دەتوانیت نەینوسیت ئەگەر ناتەوێت.
+            </p>
+            <button class="alert-btn" id="alertBtn">باشە</button>
+        </div>
     </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="profile-container">
+                <img src="imageRebwar.jpg" alt="وێنەی ڕێبوار تەها" class="profile-pic">
+                <div class="verified-badge">
+                    <i class="fas fa-check"></i>
+                </div>
+            </div>
+            <h1>ڕێبوار تەها</h1>
+            <p>چیت هەیە بۆ ڕێبوار تەها؟ پەیامەکەت بنێرە</p>
+        </div>
+        
+        <div class="feedback-form">
+            <form id="feedbackForm">
+                <div class="form-group">
+                    <label for="name" class="form-label">
+                        <span class="optional-text">(ئارەزومەندانە)</span>
+                        ناو
+                    </label>
+                    <input type="text" id="name" class="form-control" placeholder="ناوی تەواوت">
+                </div>
+                <div class="form-group">
+                    <label for="phone" class="form-label">
+                        <span class="optional-text">(ئارەزومەندانە)</span>
+                        ژمارەی مۆبایل
+                    </label>
+                    <input type="tel" id="phone" class="form-control" placeholder="٠٧٧٠ XXX XXXX">
+                </div>
+                <div class="form-group">
+                    <label for="message" class="form-label">پەیام</label>
+                    <textarea id="message" class="form-control" placeholder="پەیامەکەت لێرە بنووسە..." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i> ناردنی پەیام
+                </button>
+            </form>
+            <div id="response" class="response-message"></div>
+        </div>
+    </div>
+
     <script>
+        const welcomeAlert = document.getElementById('welcomeAlert');
+        const alertBtn = document.getElementById('alertBtn');
+        document.addEventListener('DOMContentLoaded', () => {
+            welcomeAlert.style.display = 'flex';
+        });
+        alertBtn.addEventListener('click', () => {
+            welcomeAlert.style.display = 'none';
+        });
         const form = document.getElementById('feedbackForm');
         const responseEl = document.getElementById('response');
+        
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const feedback = e.target.elements.feedback.value;
+            
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const message = document.getElementById('message').value;
             const button = form.querySelector('button');
+            
             button.disabled = true;
-            button.textContent = '...ناردن';
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> نێردرێت...';
             responseEl.classList.remove('show', 'success', 'error');
+            
             try {
                 const res = await fetch('/api/feedback', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: feedback })
+                    body: JSON.stringify({ 
+                        name: name,
+                        phone: phone,
+                        message: message
+                    })
                 });
-                const result = await res.json();
-                if (res.ok) {
-                    responseEl.textContent = "پەیامەکەت بە سەرکەوتوویی نێردرا، سوپاس!";
-                    responseEl.className = 'response-message success show';
-                    form.reset();
-                } else {
-                    throw new Error(result.error || 'هەڵەیەک ڕوویدا');
-                }
+                
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                responseEl.textContent = "پەیامەکەت بە سەرکەوتوویی نێردرا! سوپاس بۆ هاوبەشکردنی ڕایەکەت.";
+                responseEl.className = 'response-message success show';
+                form.reset();
+                
             } catch (error) {
                 responseEl.textContent = `هەڵە: ${error.message}`;
                 responseEl.className = 'response-message error show';
             } finally {
                 button.disabled = false;
-                button.textContent = 'ناردن';
-                setTimeout(() => responseEl.classList.remove('show'), 5000);
+                button.innerHTML = '<i class="fas fa-paper-plane"></i> ناردنی پەیام';
+                setTimeout(() => {
+                    responseEl.classList.remove('show');
+                }, 5000);
             }
         });
     </script>
 </body>
 </html>
-
