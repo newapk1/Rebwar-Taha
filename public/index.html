@@ -456,7 +456,7 @@
             }
             
             button.disabled = true;
-            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> نێردرێت...';
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ناردن...';
             responseEl.classList.remove('show', 'success', 'error');
             
             try {
@@ -473,7 +473,7 @@
                 const result = await res.json();
                 
                 if (result.success) {
-                    responseEl.textContent = "پەیامەکەت بە سەرکەوتوویی نێردرا! سوپاس .";
+                    responseEl.textContent = "پەیامەکەت بە سەرکەوتوویی نێردرا! زۆر سوپاس .";
                     responseEl.className = 'response-message success show';
                     form.reset();
                 } else {
@@ -493,6 +493,7 @@
     </script>
 </body>
 </html>
+
 
 
 
