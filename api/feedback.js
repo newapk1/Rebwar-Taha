@@ -12,7 +12,7 @@ const bot = new TelegramBot(botToken);
 
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname)));
-app.post('/api/feedback', (req, res) => {
+app.post('/send-feedback', (req, res) => {
     const { name, phone, message } = req.body;
     if (!message || message.trim() === '') {
         return res.status(400).json({ 
@@ -78,4 +78,5 @@ process.on('uncaughtException', (error) => {
     console.error('❌ هەڵەی نەناسراوی:', error);
     process.exit(1);
 });
+
 
