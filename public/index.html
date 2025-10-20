@@ -300,6 +300,13 @@
             transform: translateY(-2px);
         }
 
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
         @media (max-width: 576px) {
             .container {
                 max-width: 100%;
@@ -359,21 +366,23 @@
             <form id="feedbackForm">
                 <div class="form-group">
                     <label for="name" class="form-label">
+                        ناوی بەرێزت
                         <span class="optional-text">(ئارەزومەندانە)</span>
-                        ناو
                     </label>
                     <input type="text" id="name" class="form-control" placeholder="ناوی تەواوت">
                 </div>
                 <div class="form-group">
                     <label for="phone" class="form-label">
-                        <span class="optional-text">(ئارەزومەندانە)</span>
                         ژمارەی مۆبایل
+                        <span class="optional-text">(ئارەزومەندانە)</span>
                     </label>
-                    <input type="tel" id="phone" class="form-control" placeholder="٠٧٧٠ XXX XXXX">
+                    <input type="tel" id="phone" class="form-control" placeholder="٠٧٧٠ XXX XXXX" pattern="[0-9]{10,15}">
+                    <div class="error-message" id="phoneError">تکایە ژمارەی مۆبایلێکی دروست بنووسە</div>
                 </div>
                 <div class="form-group">
                     <label for="message" class="form-label">پەیام</label>
                     <textarea id="message" class="form-control" placeholder="پەیامەکەت لێرە بنووسە..." required></textarea>
+                    <div class="error-message" id="messageError">تکایە پەیامێک بنووسە</div>
                 </div>
                 <button type="submit" class="submit-btn">
                     <i class="fas fa-paper-plane"></i> ناردنی پەیام
@@ -386,29 +395,72 @@
     <script>
         const welcomeAlert = document.getElementById('welcomeAlert');
         const alertBtn = document.getElementById('alertBtn');
+        const form = document.getElementById('feedbackForm');
+        const responseEl = document.getElementById('response');
+        const phoneInput = document.getElementById('phone');
+        const phoneError = document.getElementById('phoneError');
+        const messageInput = document.getElementById('message');
+        const messageError = document.getElementById('messageError');
+
         document.addEventListener('DOMContentLoaded', () => {
             welcomeAlert.style.display = 'flex';
         });
+
         alertBtn.addEventListener('click', () => {
             welcomeAlert.style.display = 'none';
         });
-        const form = document.getElementById('feedbackForm');
-        const responseEl = document.getElementById('response');
-        
+
+        phoneInput.addEventListener('input', () => {
+            const phoneValue = phoneInput.value.trim();
+            
+            if (phoneValue === '') {
+                phoneError.style.display = 'none';
+                return;
+            }
+            const phoneRegex = /^[0-9]{10,15}$/;
+            if (!phoneRegex.test(phoneValue)) {
+                phoneError.style.display = 'block';
+            } else {
+                phoneError.style.display = 'none';
+            }
+        });
+
+        messageInput.addEventListener('input', () => {
+            const messageValue = messageInput.value.trim();
+            
+            if (messageValue === '') {
+                messageError.style.display = 'block';
+            } else {
+                messageError.style.display = 'none';
+            }
+        });
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
-            const message = document.getElementById('message').value;
+            const name = document.getElementById('name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const message = document.getElementById('message').value.trim();
             const button = form.querySelector('button');
+            if (message === '') {
+                messageError.style.display = 'block';
+                messageInput.focus();
+                return;
+            }
+            if (phone !== '') {
+                const phoneRegex = /^[0-9]{10,15}$/;
+                if (!phoneRegex.test(phone)) {
+                    phoneError.style.display = 'block';
+                    phoneInput.focus();
+                    return;
+                }
+            }
             
             button.disabled = true;
             button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> نێردرێت...';
             responseEl.classList.remove('show', 'success', 'error');
             
             try {
-                const res = await fetch('/api/feedback', {
+                const res = await fetch('/send-feedback', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
@@ -418,11 +470,15 @@
                     })
                 });
                 
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                responseEl.textContent = "پەیامەکەت بە سەرکەوتوویی نێردرا! سوپاس بۆ هاوبەشکردنی ڕایەکەت.";
-                responseEl.className = 'response-message success show';
-                form.reset();
+                const result = await res.json();
                 
+                if (result.success) {
+                    responseEl.textContent = "پەیامەکەت بە سەرکەوتوویی نێردرا! سوپاس بۆ هاوبەشکردنی ڕایەکەت.";
+                    responseEl.className = 'response-message success show';
+                    form.reset();
+                } else {
+                    throw new Error(result.error || 'هەڵەیەک ڕوویدا لە ناردنی پەیامەکە');
+                }
             } catch (error) {
                 responseEl.textContent = `هەڵە: ${error.message}`;
                 responseEl.className = 'response-message error show';
