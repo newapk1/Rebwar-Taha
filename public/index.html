@@ -553,7 +553,6 @@
                     throw new Error(result.error || 'هەڵەیەک ڕوویدا لە ناردنی پەیامەکە');
                 }
             } catch (error) {
-                // نیشاندانی ئەلێرتی هەڵە
                 errorMessage.textContent = error.message + '\nتکایە دووبارە هەوڵبدەرەوە';
                 errorAlert.style.display = 'flex';
             } finally {
@@ -564,3 +563,4 @@
     </script>
 </body>
 </html>
+
