@@ -59,7 +59,7 @@
             button.textContent = '...ناردن';
             responseEl.classList.remove('show', 'success', 'error');
             try {
-                const res = await fetch('/api/telegram', {
+                const res = await fetch('/api/feedback', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ message: feedback })
@@ -84,3 +84,4 @@
     </script>
 </body>
 </html>
+
