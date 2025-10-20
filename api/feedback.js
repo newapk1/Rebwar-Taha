@@ -49,14 +49,15 @@ module.exports = async (req, res) => {
         
         res.status(200).json({ 
             success: true, 
-            message: 'پەیام بە سەرکەوتوویی نێردرا' 
+            message: 'پەیامەکەت بە سەرکەوتوویی نێردرا' 
         });
 
     } catch (error) {
         console.error('❌ هەڵە:', error);
         res.status(500).json({ 
             success: false, 
-            error: 'هەڵەیەک ڕوویدا لە ناردنی پەیام' 
+            error: 'هەڵەیەک ڕوویدا لە ناردنی پەیامەکەتدا' 
         });
     }
 };
+
