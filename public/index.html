@@ -460,7 +460,7 @@
             responseEl.classList.remove('show', 'success', 'error');
             
             try {
-                const res = await fetch('/send-feedback', {
+                const res = await fetch('/api/feedback', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
@@ -493,3 +493,4 @@
     </script>
 </body>
 </html>
+
