@@ -193,34 +193,83 @@
         }
 
         .response-message {
-            padding: 1rem;
+            padding: 1.5rem;
             border-radius: var(--radius);
             margin-top: 1.5rem;
             text-align: center;
             font-weight: 600;
             display: none;
+            animation: slideInUp 0.5s ease;
         }
 
         .response-message.show {
             display: block;
-            animation: fadeIn 0.5s ease;
         }
 
         .response-message.success {
-            background: rgba(72, 187, 120, 0.1);
-            color: #2ecc71;
-            border: 1px solid rgba(72, 187, 120, 0.3);
+            background: linear-gradient(135deg, rgba(46, 204, 113, 0.1) 0%, rgba(46, 204, 113, 0.05) 100%);
+            color: #27ae60;
+            border: 2px solid rgba(46, 204, 113, 0.3);
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2);
         }
 
         .response-message.error {
-            background: rgba(231, 76, 60, 0.1);
-            color: #e74c3c;
-            border: 1px solid rgba(231, 76, 60, 0.3);
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.1) 0%, rgba(231, 76, 60, 0.05) 100%);
+            color: #c0392b;
+            border: 2px solid rgba(231, 76, 60, 0.3);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);
         }
 
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .alert-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: bounceIn 0.6s ease;
+        }
+
+        .alert-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .alert-message {
+            font-size: 1rem;
+            line-height: 1.5;
+            opacity: 0.9;
         }
 
         .footer {
@@ -263,20 +312,20 @@
             }
         }
 
-        .alert-icon {
+        .welcome-alert .alert-icon {
             font-size: 3rem;
             color: var(--primary);
             margin-bottom: 1rem;
         }
 
-        .alert-title {
+        .welcome-alert .alert-title {
             font-size: 1.5rem;
             margin-bottom: 1rem;
             color: var(--primary-dark);
             font-weight: 700;
         }
 
-        .alert-message {
+        .welcome-alert .alert-message {
             margin-bottom: 1.5rem;
             color: var(--text);
             line-height: 1.6;
@@ -307,6 +356,22 @@
             display: none;
         }
 
+        .success-animation {
+            animation: successPulse 2s ease-in-out;
+        }
+
+        @keyframes successPulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(46, 204, 113, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+            }
+        }
+
         @media (max-width: 576px) {
             .container {
                 max-width: 100%;
@@ -332,6 +397,14 @@
             .alert-content {
                 padding: 1.5rem;
             }
+            
+            .response-message {
+                padding: 1.2rem;
+            }
+            
+            .alert-icon {
+                font-size: 2.5rem;
+            }
         }
     </style>
 </head>
@@ -353,13 +426,13 @@
     <div class="container">
         <div class="header">
             <div class="profile-container">
-                <img src="imageRebwar.jpg" alt="وێنەی ڕێبوار تەها" class="profile-pic">
+                <img src="imageRebwar.jpg" alt="" class="profile-pic">
                 <div class="verified-badge">
                     <i class="fas fa-check"></i>
                 </div>
             </div>
             <h1>ڕێبوار تەها</h1>
-            <p>چیت هەیە بۆ ڕێبوار تەها؟ پەیامەکەت بنێرە</p>
+            <p>پەیامت چییە بۆ ڕێبوار تەها؟ پەیامەکەت بنێرە</p>
         </div>
         
         <div class="feedback-form">
@@ -442,6 +515,7 @@
             const phone = document.getElementById('phone').value.trim();
             const message = document.getElementById('message').value.trim();
             const button = form.querySelector('button');
+            
             if (message === '') {
                 messageError.style.display = 'block';
                 messageInput.focus();
@@ -475,14 +549,32 @@
                 const result = await res.json();
                 
                 if (result.success) {
-                    responseEl.textContent = "پەیامەکەت بە سەرکەوتوویی نێردرا! زۆر سوپاس.";
-                    responseEl.className = 'response-message success show';
+                    responseEl.innerHTML = `
+                        <div class="alert-icon" style="color: #27ae60;">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="alert-title">سەرکەوتووبویت !</div>
+                        <div class="alert-message">
+                            پەیامەکەت بە سەرکەوتوویی نێردرا!<br>
+                            زۆر سوپاس 🙏
+                        </div>
+                    `;
+                    responseEl.className = 'response-message success show success-animation';
                     form.reset();
                 } else {
                     throw new Error(result.error || 'هەڵەیەک ڕوویدا لە ناردنی پەیامەکە');
                 }
             } catch (error) {
-                responseEl.textContent = `هەڵە: ${error.message}`;
+                responseEl.innerHTML = `
+                    <div class="alert-icon" style="color: #c0392b;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="alert-title">هەڵە! ❌</div>
+                    <div class="alert-message">
+                        ${error.message}<br>
+                        تکایە دووبارە هەوڵبدەرەوە
+                    </div>
+                `;
                 responseEl.className = 'response-message error show';
             } finally {
                 button.disabled = false;
@@ -496,8 +588,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
