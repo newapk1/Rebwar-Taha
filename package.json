@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Feedback form for Rebwar Taha",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "dev": "node server.js",
+    "build": "echo 'No build step required'",
+    "start": "node server.js"
   },
   "dependencies": {
     "node-telegram-bot-api": "^0.64.0"
