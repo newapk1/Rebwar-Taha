@@ -1,4 +1,16 @@
 {
-  "name": "rebwar-taha-vercel",
-  "version": "1.0.0"
+  "name": "rebwar-taha-feedback",
+  "version": "1.0.0",
+  "description": "Feedback form for Rebwar Taha",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "node-telegram-bot-api": "^0.64.0"
+  },
+  "engines": {
+    "node": ">=18.x"
+  }
 }
