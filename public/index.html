@@ -441,11 +441,13 @@
             const phone = document.getElementById('phone').value.trim();
             const message = document.getElementById('message').value.trim();
             const button = form.querySelector('button');
+            
             if (message === '') {
                 messageError.style.display = 'block';
                 messageInput.focus();
                 return;
             }
+            
             if (phone !== '') {
                 const phoneRegex = /^[0-9]{10,15}$/;
                 if (!phoneRegex.test(phone)) {
@@ -456,11 +458,11 @@
             }
             
             button.disabled = true;
-            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ناردن...';
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> نێردرێت...';
             responseEl.classList.remove('show', 'success', 'error');
             
             try {
-                const res = await fetch('/api/feedback.js', {
+                const res = await fetch('/api/feedback', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
@@ -511,6 +513,7 @@
     </script>
 </body>
 </html>
+
 
 
 
