@@ -434,6 +434,7 @@
                 messageError.style.display = 'none';
             }
         });
+        
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -441,7 +442,6 @@
             const phone = document.getElementById('phone').value.trim();
             const message = document.getElementById('message').value.trim();
             const button = form.querySelector('button');
-            
             if (message === '') {
                 messageError.style.display = 'block';
                 messageInput.focus();
@@ -458,11 +458,11 @@
             }
             
             button.disabled = true;
-            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> نێردرێت...';
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ناردن...';
             responseEl.classList.remove('show', 'success', 'error');
             
-            try {
-                const res = await fetch('/api/feedback', {
+            try {    
+                const res = await fetch('/api/feedback.js', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
@@ -475,36 +475,19 @@
                 const result = await res.json();
                 
                 if (result.success) {
-                    // ئەلێرتی سەرکەوتن - جوانتر
-                    responseEl.innerHTML = `
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <i class="fas fa-check-circle" style="font-size: 1.5rem;"></i>
-                            <div>
-                                <div style="font-weight: 700; margin-bottom: 5px;">سەرکەوتووبوون!</div>
-                                <div>پەیامەکەت بە سەرکەوتوویی نێردرا! زۆر سوپاس 🙏</div>
-                            </div>
-                        </div>
-                    `;
+                    responseEl.textContent = "پەیامەکەت بە سەرکەوتوویی نێردرا! زۆر سوپاس.";
                     responseEl.className = 'response-message success show';
                     form.reset();
                 } else {
                     throw new Error(result.error || 'هەڵەیەک ڕوویدا لە ناردنی پەیامەکە');
                 }
             } catch (error) {
-                // ئەلێرتی هەڵە - جوانتر
-                responseEl.innerHTML = `
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <i class="fas fa-exclamation-triangle" style="font-size: 1.5rem;"></i>
-                        <div>
-                            <div style="font-weight: 700; margin-bottom: 5px;">هەڵە!</div>
-                            <div>${error.message}</div>
-                        </div>
-                    </div>
-                `;
+                responseEl.textContent = `هەڵە: ${error.message}`;
                 responseEl.className = 'response-message error show';
             } finally {
                 button.disabled = false;
                 button.innerHTML = '<i class="fas fa-paper-plane"></i> ناردنی پەیام';
+                
                 setTimeout(() => {
                     responseEl.classList.remove('show');
                 }, 5000);
@@ -513,9 +496,6 @@
     </script>
 </body>
 </html>
-
-
-
 
 
 
